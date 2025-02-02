@@ -1,0 +1,151 @@
+abstract class Shape {
+    abstract double calculateArea(); 
+}
+class Circle extends Shape {
+    double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+class Rectangle extends Shape {
+    double length, width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    double calculateArea() {
+        return length * width;
+    }
+}
+
+public class ShapeTest {
+    public static void main(String[] args) {
+        Shape circle = new Circle(5);
+        Shape rectangle = new Rectangle(4, 6);
+
+        System.out.println("Circle Area: " + circle.calculateArea());
+        System.out.println("Rectangle Area: " + rectangle.calculateArea());
+    }
+
+Task 7(2)Payment Interface,
+interface Payment {
+    void pay(double amount);
+    void refund(double amount);
+}
+class CreditCardPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using Credit Card.");
+    }
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded $" + amount + " to Credit Card.");
+    }
+}
+class PayPalPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid $" + amount + " using PayPal.");
+    }
+
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded $" + amount + " to PayPal.");
+    }
+}
+public class PaymentTest {
+    public static void main(String[] args) {
+        Payment payment1 = new CreditCardPayment();
+        Payment payment2 = new PayPalPayment();
+
+        payment1.pay(100.50);
+        payment2.pay(50.75);
+        payment1.refund(20.00);
+        payment2.refund(10.50);
+    }
+}
+
+Task7(3) Employee Management System
+class Employee {
+    protected String name;
+    protected int id;
+    protected double salary;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+    public void displayDetails() {
+        System.out.println("ID: " + id + ", Name: " + name + ", Salary: $" + salary);
+    }
+    public double calculateBonus() {
+        return salary * 0.10; // 10% bonus
+    }
+}
+class Manager extends Employee {
+    private double bonus;
+
+    public Manager(String name, int id, double salary, double bonus) {
+        super(name, id, salary);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("Bonus: $" + bonus);
+    }
+
+    @Override
+    public double calculateBonus() {
+        return salary * 0.20 + bonus; 
+    }
+}
+class Intern extends Employee {
+    private int duration; // Duration in months
+
+    public Intern(String name, int id, double salary, int duration) {
+        super(name, id, salary);
+        this.duration = duration;
+    }
+
+    @Override
+    public void displayDetails() {
+        super.displayDetails();
+        System.out.println("Internship Duration: " + duration + " months");
+    }
+
+    @Override
+    public double calculateBonus() {
+        return 0; // Interns don't get bonuses
+    }
+}
+public class EmployeeManagementSystem {
+    public static void main(String[] args) {
+        Employee emp1 = new Employee("Alice", 101, 50000);
+        Manager mgr = new Manager("Bob", 102, 80000, 5000);
+        Intern intern = new Intern("Charlie", 103, 20000, 6);
+
+        System.out.println("Employee Details:");
+        emp1.displayDetails();
+        System.out.println("Bonus: $" + emp1.calculateBonus());
+
+        System.out.println("\nManager Details:");
+        mgr.displayDetails();
+        System.out.println("Bonus: $" + mgr.calculateBonus());
+
+        System.out.println("\nIntern Details:");
+        intern.displayDetails();
+        System.out.println("Bonus: $" + intern.calculateBonus());
+    }
+}
