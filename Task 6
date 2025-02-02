@@ -1,0 +1,159 @@
+abstract class Shape {
+    public abstract double calculateArea();
+}
+class Circle extends Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius; 
+    }
+}
+
+
+class Rectangle extends Shape {
+    private double length;
+    private double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    @Override
+    public double calculateArea() {
+        return length * width; 
+    }
+}
+interface Payment {
+    void pay(double amount);
+    void refund(double amount);
+}
+
+class CreditCardPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " using Credit Card.");
+    }
+
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded " + amount + " to Credit Card.");
+    }
+}
+
+class PayPalPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " using PayPal.");
+    }
+
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded " + amount + " to PayPal.");
+    }
+}
+class Employee {
+    private String name;
+    private int id;
+    private double salary;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+
+    public void displayEmployeeDetails() {
+        System.out.println("Employee Name: " + name);
+        System.out.println("Employee ID: " + id);
+        System.out.println("Employee Salary: $" + salary);
+    }
+
+    public void work() {
+        System.out.println(name + " is working.");
+    }
+}
+class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, int id, double salary, String department) {
+        super(name, id, salary);
+        this.department = department;
+    }
+
+    @Override
+    public void displayEmployeeDetails() {
+        super.displayEmployeeDetails();
+        System.out.println("Department: " + department);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(getName() + " is managing the " + department + " department.");
+    }
+    public String getName() {
+        return super.name;
+    }
+}
+
+class Intern extends Employee {
+    private String university;
+
+    public Intern(String name, int id, double salary, String university) {
+        super(name, id, salary);
+        this.university = university;
+    }
+
+    @Override
+    public void displayEmployeeDetails() {
+        super.displayEmployeeDetails();
+        System.out.println("University: " + university);
+    }
+
+    @Override
+    public void work() {
+        System.out.println(getName() + " is learning and assisting.");
+    }
+    public String getName() {
+        return super.name;
+    }
+}
+public class EmployeeManagementSystem {
+    public static void main(String[] args) {
+        System.out.println("\n--- Shape Area Calculation ---");
+        Shape circle = new Circle(5.0);
+        System.out.println("Circle Area: " + circle.calculateArea());
+
+        Shape rectangle = new Rectangle(4.0, 6.0);
+        System.out.println("Rectangle Area: " + rectangle.calculateArea());
+
+
+        System.out.println("\n--- Payment Method Testing ---");
+        Payment payment1 = new CreditCardPayment();
+        payment1.pay(100.0);
+        payment1.refund(50.0);
+
+        Payment payment2 = new PayPalPayment();
+        payment2.pay(200.0);
+        payment2.refund(100.0);
+
+        System.out.println("\n--- Employee Management ---");
+
+        Employee emp1 = new Employee("Surabhi", 1, 569000);
+        emp1.displayEmployeeDetails();
+        emp1.work();
+
+        Manager mgr1 = new Manager("Suhani", 2, 75000, "IT");
+        mgr1.displayEmployeeDetails();
+        mgr1.work();
+
+        Intern intern1 = new Intern("Tanvi", 3, 27000, "Harvard University");
+        intern1.displayEmployeeDetails();
+        intern1.work();
+    }
+}
