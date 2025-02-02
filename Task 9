@@ -1,0 +1,44 @@
+//Reverse a given string
+public class Task9 {
+    
+    // Task 1: Reverse a given string
+    public static String reverseString(String str) {
+        StringBuilder reversed = new StringBuilder(str);
+        return reversed.reverse().toString();
+    }
+
+    // Task 2: Check if a given string is a palindrome
+    public static boolean isPalindrome(String str) {
+        String reversed = reverseString(str);
+        return str.equalsIgnoreCase(reversed);
+    }
+
+    // Task 3: Count the occurrences of a specific character in a string
+    public static int countCharacterOccurrences(String str, char ch) {
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == ch) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        String str = "madam";
+        char characterToCount = 'a';
+
+        // Task 1:
+        String reversed = reverseString(str);
+        System.out.println("Reversed string: " + reversed);
+
+        // Task 2: 
+        boolean palindromeCheck = isPalindrome(str);
+        System.out.println("Is the string a palindrome? " + palindromeCheck);
+
+        // Task 3: 
+        int occurrences = countCharacterOccurrences(str, characterToCount);
+        System.out.println("Occurrences of '" + characterToCount + "' in the string: " + occurrences);
+    }
+}
+
