@@ -1,0 +1,56 @@
+//Task 1: Create an array of integers, find the sum and average of all elements
+
+public class Task1 {
+    public static void main(String[] args) {
+        int[] numbers = {5, 10, 15, 20, 25};
+
+        int sum = 0;
+        for (int num : numbers) {
+            sum += num;
+        }
+        double average = (double) sum / numbers.length;
+        System.out.println("Sum of array elements: " + sum);
+        System.out.println("Average of array elements: " + average);
+    }
+}
+
+//Task 2: Implement a program to find the maximum and minimum values in an integer array
+public class Task2 {
+    public static void main(String[] args) {
+        int[] numbers = {10, 2, 56, 3, 89, 22};
+
+        int max = numbers[0];
+        int min = numbers[0];
+
+        for (int num : numbers) {
+            if (num > max) {
+                max = num;
+            }
+            if (num < min) {
+                min = num;
+            }
+        }
+        System.out.println("Maximum value: " + max);
+        System.out.println("Minimum value: " + min);
+    }
+}
+
+//Task 3: Create a two-dimensional array to represent a matrix and print it
+
+public class Task3 {
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        System.out.println("Matrix:");
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println(); 
+        }
+    }
+}
+
