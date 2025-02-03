@@ -1,0 +1,65 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+class AgeValidator {
+    public void validateAge(int age) throws InvalidAgeException {
+        if (age < 0) {
+            throw new InvalidAgeException("Age cannot be negative.");
+        }
+        System.out.println("Age is valid: " + age);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int numerator = 10;
+        int denominator = 0;
+
+        try {
+            int result = numerator / denominator;
+            System.out.println("Result: " + result);
+        } catch (ArithmeticException e) {
+            System.out.println("Error: Division by zero is not allowed.");
+        }
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("sample.txt"));
+            String line = reader.readLine();
+            System.out.println("File Content: " + line);
+        } catch (IOException e) {
+            System.out.println("Error: Unable to read the file.");
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                    System.out.println("File resource closed.");
+                }
+            } catch (IOException e) {
+                System.out.println("Error while closing the file.");
+            }
+        }
+        AgeValidator validator = new AgeValidator();
+        try {
+            validator.validateAge(-5); 
+        } catch (InvalidAgeException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+        try {
+            readFile("sample.txt");
+        } catch (IOException e) {
+            System.out.println("Error reading the file: " + e.getMessage());
+        }
+    }
+    public static void readFile(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+        System.out.println("File Content (from readFile method): " + line);
+        reader.close();
+    }
+}
