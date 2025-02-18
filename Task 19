@@ -1,0 +1,34 @@
+ interface Shape {
+    double calculateArea();
+}
+abstract class Rectangle implements Shape {
+    protected double width;
+    protected double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    public static class Circle implements Shape {
+        private double radius;
+
+        public Circle(double radius) {
+            this.radius = radius;
+        }
+        public double calculateArea() {
+            return Math.PI * radius * radius;
+        }
+    }
+}
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Rectangle rectangle = new Rectangle(5, 10);
+            public double calculateArea() {
+                return width * height;
+            }
+        }
+        Rectangle.Circle circle = new Rectangle.Circle(7);
+        System.out.println("Rectangle Area: " + rectangle.calculateArea());
+        System.out.println("Circle Area: " + circle.calculateArea());
+    }
+}
