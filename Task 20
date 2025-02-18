@@ -1,0 +1,62 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+class CurrencyConverter {
+    private static final Map<String, BigDecimal> exchangeRates = new HashMap<>();
+
+    static {
+        exchangeRates.put("USD_TO_EUR", new BigDecimal("0.85"));
+        exchangeRates.put("USD_TO_GBP", new BigDecimal("0.75"));
+        exchangeRates.put("EUR_TO_USD", new BigDecimal("1.18"));
+        exchangeRates.put("EUR_TO_GBP", new BigDecimal("0.88"));
+        exchangeRates.put("GBP_TO_USD", new BigDecimal("1.33"));
+        exchangeRates.put("GBP_TO_EUR", new BigDecimal("1.14"));
+    }
+
+    public static BigDecimal convert(String from, String to, BigDecimal amount) {
+        String key = from + "_TO_" + to;
+        if (!exchangeRates.containsKey(key)) {
+            throw new IllegalArgumentException("Exchange rate not available for " + from + " to " + to);
+        }
+        return amount.multiply(exchangeRates.get(key)).setScale(2, RoundingMode.HALF_UP);
+    }
+}
+final class Person {
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate dateOfBirth;
+
+    public Person(String firstName, String lastName, LocalDate dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public int getAge() {
+        return Period.between(dateOfBirth, LocalDate.now()).getYears();
+    }
+}
+public class JavaTasks {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter amount in USD: ");
+        BigDecimal amount = scanner.nextBigDecimal();
+        System.out.println("Converted to EUR: " + CurrencyConverter.convert("USD", "EUR", amount));
+        System.out.println("Converted to GBP: " + CurrencyConverter.convert("USD", "GBP", amount));
+        Person person = new Person("Surabhi", "Tanvi", LocalDate.of(1995, 5, 15));
+        System.out.println("\nPerson Details:");
+        System.out.println("Full Name: " + person.getFullName());
+        System.out.println("Age: " + person.getAge());
+
+        scanner.close();
+    }
+}
