@@ -1,0 +1,96 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+class Logger {
+    private static Logger instance;
+    private Logger() {}
+    public static synchronized Logger getInstance() {
+        if (instance == null) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+    public void log(String message) {
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        System.out.println("[" + timestamp + "] " + message);
+    }
+}
+class DatabaseConnection {
+    private static DatabaseConnection instance;
+    private DatabaseConnection() {}
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    public void connect() {
+        System.out.println("Connecting to the database...");
+    }
+
+    public void disconnect() {
+        System.out.println("Disconnecting from the database...");
+    }
+}
+
+enum UserRole {
+    ADMIN("Full access"),
+    USER("Limited access"),
+    GUEST("No access");
+
+    private String accessLevel;
+
+    
+    UserRole(String accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    public String getAccessLevel() {
+        return accessLevel;
+    }
+}
+enum Day {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+
+    public boolean isWeekday() {
+        return this != SATURDAY && this != SUNDAY;
+    }
+}
+enum StatusCode {
+    SUCCESS("Operation was successful."),
+    ERROR("An error occurred."),
+    PENDING("Operation is pending.");
+
+    private String message;
+    StatusCode(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+
+public class CombinedProgram {
+    public static void main(String[] args) {
+        Logger logger = Logger.getInstance();
+        logger.log("Application started.");
+        DatabaseConnection dbConnection = DatabaseConnection.getInstance();
+        dbConnection.connect();
+        dbConnection.disconnect();
+        System.out.println("\nUser Roles and Access Levels:");
+        for (UserRole role : UserRole.values()) {
+            System.out.println(role + ": " + role.getAccessLevel());
+        }
+        System.out.println("\nDays of the Week:");
+        for (Day day : Day.values()) {
+            System.out.println(day + " is a " + (day.isWeekday() ? "Weekday" : "Weekend"));
+        }
+        System.out.println("\nStatus Codes and Messages:");
+        for (StatusCode code : StatusCode.values()) {
+            System.out.println(code + ": " + code.getMessage());
+        }
+
+        logger.log("Application finished.");
+    }
+}
