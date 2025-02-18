@@ -1,0 +1,41 @@
+import java.util.*;
+
+public class IteratorExamples {
+    public static void main(String[] args) {
+List<String> students = new ArrayList<>(Arrays.asList("SURABHI", "TANVI", "SUHANI", "SUVIDHI", "KOMAL"));
+        System.out.println("Student List: " + students);
+        Iterator<String> iterator = students.iterator();
+        System.out.println("All Students:");
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        iterator = students.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().startsWith("A")) {
+                iterator.remove();
+            }
+        }
+
+        System.out.println("Students after removal (names starting with 'A'):");
+        System.out.println(students);
+        LinkedList<String> cities = new LinkedList<>(Arrays.asList("New York", "Los Angeles", "Chicago", "Houston", "Phoenix"));
+        System.out.println("\nCity List: " + cities);
+        ListIterator<String> listIterator = cities.listIterator();
+        System.out.println("Cities in forward order:");
+        while (listIterator.hasNext()) {
+            System.out.println(listIterator.next());
+        }
+        System.out.println("Cities in reverse order:");
+        while (listIterator.hasPrevious()) {
+            System.out.println(listIterator.previous());
+        }
+        Vector<String> countries = new Vector<>(Arrays.asList("USA", "Canada", "India", "Germany", "Australia"));
+        System.out.println("\nCountry List: " + countries);
+        Enumeration<String> enumeration = countries.elements();
+        System.out.println("Countries:");
+        while (enumeration.hasMoreElements()) {
+            System.out.println(enumeration.nextElement());
+        }
+    }
+}
