@@ -1,0 +1,49 @@
+import java.util.*;
+class Student implements Comparable<Student> {
+    String firstName;
+    String lastName;
+    int age;
+    double height;
+
+    public Student(String firstName, String lastName, int age, double height) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.height = height;
+{
+    public int compareTo(Student other) {
+        return Integer.compare(this.age, other.age);
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " (Age: " + age + ", Height: " + height + " cm)";
+    }
+}
+class SecondCharacterComparator implements Comparator<Student> {
+    public int compare(Student s1, Student s2) {
+        char ch1 = s1.firstName.length() > 1 ? s1.firstName.charAt(1) : s1.firstName.charAt(0);
+        char ch2 = s2.firstName.length() > 1 ? s2.firstName.charAt(1) : s2.firstName.charAt(0);
+        return Character.compare(ch1, ch2);
+    }
+}
+
+public class StudentSorting {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Tanvi", "Surabhi", 22, 165.5));
+        students.add(new Student("Suhani", "Tanvi", 20, 172.3));
+        students.add(new Student("Surabhi", "Suhani", 24, 168.9));
+        students.add(new Student("Tanvi", "Suvidhi", 21, 175.0));
+        Collections.sort(students);
+        System.out.println("Students sorted by Age (Natural Order):");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+        Collections.sort(students, new SecondCharacterComparator());
+        System.out.println("\nStudents sorted by 2nd character of First Name:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+}
