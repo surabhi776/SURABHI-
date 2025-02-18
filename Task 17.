@@ -1,0 +1,29 @@
+import java.util.PriorityQueue;
+
+class Patient {
+    String name;
+    int priorityLevel;  
+
+    public Patient(String name, int priorityLevel) {
+        this.name = name;
+        this.priorityLevel = priorityLevel;
+    }
+    public String toString() {
+        return "Patient{name='" + name + "', priorityLevel=" + priorityLevel + '}';
+    }
+}
+
+public class HospitalQueue {
+    public static void main(String[] args) {
+        PriorityQueue<Patient> queue = new PriorityQueue<>((p1, p2) -> p2.priorityLevel - p1.priorityLevel);
+        queue.add(new Patient("Surabhi", 5));
+        queue.add(new Patient("Tanvi", 2));
+        queue.add(new Patient("Suhani", 10));
+        queue.add(new Patient("Suvidhi", 7));
+
+        System.out.println("Hospital Queue (Based on Priority):");
+        while (!queue.isEmpty()) {
+            System.out.println(queue.poll()); 
+        }
+    }
+}
