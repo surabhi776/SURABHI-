@@ -1,0 +1,119 @@
+import java.util.*;
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode(int val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+public class JavaTasks {
+    public static void main(String[] args) {
+        System.out.println("Average: " + calculateAverage(10.5, 20.2, 30.8, 40.4));
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+        System.out.println("Two Sum Result: " + Arrays.toString(twoSum(nums, target)));
+
+   
+        String parentheses = "{[()]}";
+        System.out.println("Valid Parentheses: " + isValid(parentheses));
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(4);
+        System.out.println("Original Linked List: " + linkedListToString(head));
+        ListNode reversedHead = reverseList(head);
+        System.out.println("Reversed Linked List: " + linkedListToString(reversedHead));
+        int palindromeNum = 121;
+        System.out.println("Is Palindrome Number: " + isPalindrome(palindromeNum));
+        ListNode l1 = new ListNode(1);
+        l1.next = new ListNode(3);
+        l1.next.next = new ListNode(5);
+
+        ListNode l2 = new ListNode(2);
+        l2.next = new ListNode(4);
+        l2.next.next = new ListNode(6);
+
+        System.out.println("Merged Sorted List: " + linkedListToString(mergeTwoLists(l1, l2)));
+    }
+    public static double calculateAverage(double... numbers) {
+        if (numbers.length == 0) return 0;
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
+        }
+        return sum / numbers.length;
+    }
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+            map.put(nums[i], i);
+        }
+        return new int[]{};
+    }
+    public static boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        Map<Character, Character> mapping = Map.of(')', '(', '}', '{', ']', '[');
+        for (char c : s.toCharArray()) {
+            if (mapping.containsValue(c)) {
+                stack.push(c);
+            } else if (!stack.isEmpty() && mapping.get(c) == stack.peek()) {
+                stack.pop();
+            } else {
+                return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+        return prev;
+    }
+    public static boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+        int reversed = 0;
+        int original = x;
+        while (x > 0) {
+            reversed = reversed * 10 + x % 10;
+            x /= 10;
+        }
+        return original == reversed;
+    }
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                current.next = l1;
+                l1 = l1.next;
+            } else {
+                current.next = l2;
+                l2 = l2.next;
+            }
+            current = current.next;
+        }
+        current.next = (l1 != null) ? l1 : l2;
+        return dummy.next;
+    }
+    public static String linkedListToString(ListNode head) {
+        StringBuilder sb = new StringBuilder();
+        while (head != null) {
+            sb.append(head.val).append(" -> ");
+            head = head.next;
+        }
+        sb.append("null");
+        return sb.toString();
+    }
+}
