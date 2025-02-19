@@ -1,0 +1,33 @@
+class Person {
+    protected String name;
+    protected int age;
+
+    
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+class Student extends Person {
+    private String studentId;
+    private String course;
+    public Student(String name, int age, String studentId, String course) {
+        super(name, age); 
+        this.studentId = studentId;
+        this.course = course;
+    }
+    public String toString() {
+        return "Student Details:\n" +
+               "Name: " + name + "\n" +
+               "Age: " + age + "\n" +
+               "Student ID: " + studentId + "\n" +
+               "Course: " + course;
+    }
+}
+public class PersonStudentDemo {
+    public static void main(String[] args) {
+        Student student = new Student("Surabhi Rathore", 21, "S12345", "Computer Science");
+ overridden toString() method
+        System.out.println(student);
+    }
+}
