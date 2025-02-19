@@ -1,0 +1,104 @@
+import java.util.*;
+class Student implements Comparable<Student> {
+    int rollNumber;
+    String name;
+    int age;
+
+    public Student(int rollNumber, String name, int age) {
+        this.rollNumber = rollNumber;
+        this.name = name;
+        this.age = age;
+    }
+    public int compareTo(Student other) {
+        return this.name.compareTo(other.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Student{ Roll: " + rollNumber + ", Name: '" + name + "', Age: " + age + " }";
+    }
+}
+class AgeComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.age, s2.age);
+    }
+}
+class RollNumberComparator implements Comparator<Student> {
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.rollNumber, s2.rollNumber);
+    }
+}
+class EvenPrinter extends Thread {
+    private final Object lock;
+    
+    EvenPrinter(Object lock) {
+        this.lock = lock;
+    }
+    
+    public void run() {
+        for (int i = 2; i <= 10; i += 2) {
+            synchronized (lock) {
+                System.out.println("Even: " + i);
+                lock.notify();
+                try {
+                    if (i != 10) lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+class OddPrinter extends Thread {
+    private final Object lock;
+    
+    OddPrinter(Object lock) {
+        this.lock = lock;
+    }
+    
+    public void run() {
+        for (int i = 1; i <= 9; i += 2) {
+            synchronized (lock) {
+                System.out.println("Odd: " + i);
+                lock.notify();
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+public class StudentSortingAndThreads {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(103, "Surabhi", 22));
+        students.add(new Student(101, "Tanvi", 20));
+        students.add(new Student(104, "Suhani", 21));
+        students.add(new Student(102, "Suvidhi", 23));
+        Collections.sort(students);
+        System.out.println("Sorted by Name:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+        students.sort(new AgeComparator());
+        System.out.println("\nSorted by Age:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+        students.sort(new RollNumberComparator());
+        System.out.println("\nSorted by Roll Number:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+        Object lock = new Object();
+        EvenPrinter evenThread = new EvenPrinter(lock);
+        OddPrinter oddThread = new OddPrinter(lock);
+        
+        evenThread.start();
+        oddThread.start();
+    }
+}
