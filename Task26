@@ -1,0 +1,57 @@
+class Library {
+    private int availableBooks;
+
+    public Library(int availableBooks) {
+        this.availableBooks = availableBooks;
+    }
+    public synchronized void borrowBook(String studentName) {
+        while (availableBooks == 0) { 
+            try {
+                System.out.println(studentName + " is waiting for a book...");
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        availableBooks--;
+        System.out.println(studentName + " borrowed a book. Books left: " + availableBooks);
+    }
+    public synchronized void returnBook(String studentName) {
+        availableBooks++;
+        System.out.println(studentName + " returned a book. Books left: " + availableBooks);
+        notify(); 
+    }
+}
+class Student extends Thread {
+    private Library library;
+    private String studentName;
+
+    public Student(Library library, String studentName) {
+        this.library = library;
+        this.studentName = studentName;
+    }
+
+    @Override
+    public void run() {
+        library.borrowBook(studentName);
+        try {
+            Thread.sleep(2000); 
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        library.returnBook(studentName);
+    }
+}
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library(2); 
+        Student s1 = new Student(library, "Student 1");
+        Student s2 = new Student(library, "Student 2");
+        Student s3 = new Student(library, "Student 3");
+        Student s4 = new Student(library, "Student 4");
+        s1.start();
+        s2.start();
+        s3.start();
+        s4.start();
+    }
+}
