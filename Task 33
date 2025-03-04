@@ -1,0 +1,39 @@
+import java.util.*;
+import java.util.stream.Collectors;
+class Student {
+    String name;
+    int marks;
+
+    Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+}
+public class StreamAPIDemo {
+    public static void main(String[] args) {
+        List<Student> students = Arrays.asList(
+            new Student("Surabhi", 97);
+            new Student("Tanvi", 66);
+            new Student("Suhani", 89);
+            new Student("Suvidhi", 99);
+            new Student("Komal", 90);
+        )
+        List<String> highScorers = students.stream()
+            .filter(s -> s.marks > 80)
+            .map(s -> s.name)
+            .collect(Collectors.toList());
+
+        System.out.println("Students with marks above 80: " + highScorers);
+        List<String> names = Arrays.asList("Surabhi", "Tanvi", "Suhani", "Suvidhi");
+        List<String> upperCaseNames = names.stream()
+            .map(String::toUpperCase)
+            .collect(Collectors.toList());
+
+        System.out.println("Names in uppercase: " + upperCaseNames);
+        List<Integer> numbers = Arrays.asList(5, 10, 15, 20, 25);
+        int sum = numbers.stream()
+            .reduce(0, Integer::sum);
+
+        System.out.println("Sum of all numbers: " + sum);
+    }
+}
