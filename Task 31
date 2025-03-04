@@ -1,0 +1,18 @@
+public class LambdaExample {
+    public static void main(String[] args) {
+        Runnable task = () -> {
+            System.out.println("Thread is running using Lambda Expression.");
+        };
+        
+        Thread thread = new Thread(task);
+        thread.start();
+        EvenChecker isEven = (num) -> num % 2 == 0;
+        int[] numbers = {10, 15, 22, 35, 40};
+        for (int num : numbers) {
+            System.out.println("Is " + num + " even? " + isEven.check(num));
+        }
+    }
+    interface EvenChecker {
+        boolean check(int num);
+    }
+}
