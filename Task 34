@@ -1,0 +1,30 @@
+interface Converter {
+    String convertToUpperCase(String input);
+}
+interface Greetings {
+    default void sayHello() {
+        System.out.println("Hello from the default method!");
+    }
+}
+class CustomGreetings implements Greetings {
+    @Override
+    public void sayHello() {
+        System.out.println("Hello from the overridden method in CustomGreetings!");
+    }
+}
+
+public class LambdaToMethodReference {
+    public static String toUpperCaseMethod(String str) {
+        return str.toUpperCase();
+    }
+
+    public static void main(String[] args) {
+        Converter lambdaConverter = str -> str.toUpperCase();
+        System.out.println("Lambda Output: " + lambdaConverter.convertToUpperCase("hello"));
+        Converter methodRefConverter = LambdaToMethodReference::toUpperCaseMethod;
+        System.out.println("Method Reference Output: " + methodRefConverter.convertToUpperCase("hello"));
+
+        Greetings defaultGreet = new CustomGreetings();
+        defaultGreet.sayHello();
+    }
+}
