@@ -1,0 +1,101 @@
+//Spring Boot & Hibernate – Weekly Learning Recap
+//This week 3 , I focused on improving backend performance and structuring data relationships using Spring Boot and Hibernate. 
+//I implemented Pagination and Sorting in REST APIs using Pageable and Sort, which helped in efficiently managing large datasets.
+//I also worked on entity relationships, building a User-Profile system using a One-to-One mapping, and a Blog with Comments module using One-to-Many mapping. 
+//One key challenge I faced was handling dynamic sorting based on user input, which I solved by passing sort fields via API parameters. By applying pagination,
+//I noticed faster response times and better scalability. These concepts are especially useful in real-world apps like e-commerce platforms and dashboards.
+//Up next, I’m planning to explore Spring Security, JWT Authentication, and writing advanced JPA queries for even more control over backend logic.
+//Create Your Entity Classes for things like User, Blog, Comment, etc.
+
+//For example, for a User Profile (One-to-One relationship):
+@Entity
+public class UserProfile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address; 
+
+}
+For One-to-Many Relationship (Blog-Comment):
+
+java
+Copy
+Edit
+@Entity
+public class Blog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String content;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Comment> comments;
+}
+
+@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id")
+    private Blog blog; 
+}
+
+//Step 3: Implement Pagination and Sorting in Repositories
+Create Repository Interfaces with PagingAndSortingRepository or JpaRepository:
+
+public interface BlogRepository extends PagingAndSortingRepository<Blog, Long> {
+    Page<Blog> findAll(Pageable pageable);
+}
+ //Applied when calling the findAll() method.
+
+//Step 4: Create Service and Controller
+Create Service: Add logic to handle pagination and sorting.
+
+@Service
+public class BlogService {
+
+    @Autowired
+    private BlogRepository blogRepository;
+
+    public Page<Blog> getBlogs(Pageable pageable) {
+        return blogRepository.findAll(pageable);
+    }
+}
+//Create Controller: Create an endpoint to handle paginated and sorted requests.
+
+@RestController
+@RequestMapping("/api/blogs")
+public class BlogController {
+
+    @Autowired
+    private BlogService blogService;
+
+    @GetMapping
+    public Page<Blog> getBlogs(@RequestParam(defaultValue = "0") int page,
+                               @RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return blogService.getBlogs(pageable);
+    }
+}
+
+//Step 5: Configure Application Properties
+In application.properties or application.yml file, configure database and pagination settings:
+
+properties
+
+spring.datasource.url=jdbc:mysql://localhost:3307/user_db
+spring.datasource.username=root
+spring.datasource.password=54858
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.format_sql=true
