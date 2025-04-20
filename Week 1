@@ -1,0 +1,4 @@
+I recently completed a practice task focused on Spring Boot Starter Dependencies. The task involved setting up a Spring Boot project and exploring how starter dependencies, 
+like spring-boot-starter-web and spring-boot-starter-data-jpa, automatically handle required libraries, simplifying project setup and reducing boilerplate code. 
+I also encountered and resolved minor dependency conflicts by managing versions in pom.xml, and customized configurations through application.properties. 
+This experience gave me a deeper understanding of how Spring Boot auto-configuration works and how it enhances development efficiency.
