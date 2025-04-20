@@ -1,0 +1,182 @@
+Week 4: Mastering Entity Relationships in Spring Boot
+
+In Week 4, I focused on entity relationships in Spring Boot, covering One-to-One, One-to-Many, and Many-to-One mappings. Additionally, I explored the use of DTOs (Data Transfer Objects) for optimizing data transfer between the client and server.
+
+Key Insights:
+
+One-to-One Mapping: Utilized @OneToOne and @JoinColumn annotations to establish direct relationships between entities, effectively handling the foreign key setup.
+
+One-to-Many & Many-to-One Mappings: These mappings enable parent-child relationships. Using @OneToMany and @ManyToOne, I structured data to handle multiple relationships between entities.
+
+DTOs for Efficient Data Transfer: By using DTOs, I improved performance and security by sending only the necessary data to the client, avoiding exposure of full entity objects.
+
+Challenges Encountered:
+
+Lazy Initialization Issues: Faced challenges with lazy loading of related entities. I solved this using custom JPQL queries with JOIN FETCH to efficiently load data when needed.
+
+Bidirectional Relationships: Initially struggled with infinite recursion in bidirectional relationships. Solved this by using @JsonIgnore and @JsonManagedReference to manage cyclic dependencies in JSON responses.
+
+Practical Application:
+Understanding entity relationships and DTOs is key for building scalable applications like e-commerce and CMS platforms. These concepts help in structuring data effectively and optimizing performance.
+
+Next Steps:
+Looking forward to implementing Many-to-Many relationships and further optimizing queries with criteria queries and caching strategies.
+
+GitHub Repository: [ https://github.com/surabhi776/SURABHI-/new/main]
+
+#SpringBoot #Hibernate #JPA #EntityMapping #DTO #BackendDevelopment #Java
+
+1. Entities with JPA Annotations:
+One-to-One Relationship (User & Profile):
+
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
+
+    
+}
+
+@Entity
+public class Profile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String bio;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
+
+#One-to-Many Relationship (Blog & Comments):
+@Entity
+public class Blog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String content;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+}
+
+@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id", nullable = false)
+    private Blog blog;
+
+    
+}  
+}
+//Many-to-One Relationship (Post & User):
+@Entity
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+}
+//. DTOs to Optimize Data Transfer:
+public class BlogDTO {
+    private Long id;
+    private String title;
+    private String content;
+
+    // Optional: Only include necessary data like comments count
+    private int commentsCount;
+
+    public BlogDTO(Blog blog) {
+        this.id = blog.getId();
+        this.title = blog.getTitle();
+        this.content = blog.getContent();
+        this.commentsCount = blog.getComments().size();
+    }
+
+
+}
+//UserDTO (Data Transfer Object):
+public class UserDTO {
+    private Long id;
+    private String name;
+    private String email;
+    private ProfileDTO profile;
+
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.profile = new ProfileDTO(user.getProfile());
+    }
+
+
+}
+//ProfileDTO (Profile Data Transfer Object):
+public class ProfileDTO {
+    private Long id;
+    private String bio;
+
+    public ProfileDTO(Profile profile) {
+        this.id = profile.getId();
+        this.bio = profile.getBio();
+    }
+
+  
+}
+//4. Bidirectional Relationship & Handling Cyclic Dependencies:
+@Entity
+public class Blog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String content;
+
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Comment> comments;
+
+}
+
+@Entity
+public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "blog_id", nullable = false)
+    @JsonBackReference
+    private Blog blog;
+
+    
+}
+
+
